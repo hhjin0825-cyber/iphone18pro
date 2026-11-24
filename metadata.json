@@ -1,0 +1,6 @@
+{
+  "name": "iPhone 18 Pro Showcase & Spec",
+  "description": "iPhone 18 Pro 차세대 플래그십 인터랙티브 웹 쇼케이스 및 기획 설계 명세서",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

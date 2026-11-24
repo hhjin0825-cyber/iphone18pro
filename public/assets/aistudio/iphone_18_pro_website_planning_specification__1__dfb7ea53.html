@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[기획안] iPhone 18 Pro 랜딩 페이지 인터랙티브 웹 기획서</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        planDark: '#070709',
+                        burgundy: '#6b1124',
+                        glacier: '#89b3ca',
+                        spaceBlack: '#1a1a1f',
+                        silverPure: '#e2e8f0',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #070709;
+            color: #f3f4f6;
+            font-family: 'Pretendard', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Theme Colors */
+        .theme-burgundy {
+            --accent-glow: rgba(186, 24, 67, 0.45);
+            --accent-border: rgba(225, 29, 72, 0.5);
+            --accent-text: #f43f5e;
+            --accent-bg: rgba(159, 18, 57, 0.2);
+        }
+        .theme-glacier {
+            --accent-glow: rgba(56, 189, 248, 0.45);
+            --accent-border: rgba(56, 189, 248, 0.5);
+            --accent-text: #38bdf8;
+            --accent-bg: rgba(14, 165, 233, 0.2);
+        }
+        .theme-black {
+            --accent-glow: rgba(147, 51, 234, 0.35);
+            --accent-border: rgba(168, 85, 247, 0.4);
+            --accent-text: #c084fc;
+            --accent-bg: rgba(126, 34, 206, 0.2);
+        }
+        .theme-silver {
+            --accent-glow: rgba(226, 232, 240, 0.35);
+            --accent-border: rgba(241, 245, 249, 0.5);
+            --accent-text: #f8fafc;
+            --accent-bg: rgba(203, 213, 225, 0.15);
+        }
+
+        .glass-panel {
+            background: rgba(18, 18, 24, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            border-color: var(--accent-border, rgba(225, 29, 72, 0.5));
+            box-shadow: 0 12px 30px -10px var(--accent-glow, rgba(186, 24, 67, 0.3));
+        }
+
+        .accent-text { color: var(--accent-text, #f43f5e); }
+        .accent-bg { background-color: var(--accent-bg, rgba(159, 18, 57, 0.2)); }
+        .accent-border { border-color: var(--accent-border, rgba(225, 29, 72, 0.5)); }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .color-glow-bg {
+            box-shadow: 0 0 100px 30px var(--accent-glow, rgba(186, 24, 67, 0.35));
+            transition: box-shadow 0.6s ease;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #070709; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+    </style>
+</head>
+<body id="app-body" class="theme-burgundy p-4 sm:p-8 md:p-12 selection:bg-rose-600 selection:text-white">
+
+    <div class="max-w-7xl mx-auto space-y-12">
+        
+        <!-- Document Navigation & Status Header -->
+        <header class="glass-panel rounded-3xl p-6 sm:p-8 border accent-border relative overflow-hidden color-glow-bg">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+                <div class="space-y-2">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="tag accent-bg accent-text border accent-border">
+                            <i class="fa-solid fa-layer-group mr-1.5"></i> Web Project Proposal &amp; Interactive Spec
+                        </span>
+                        <span class="tag bg-white/10 text-gray-300">Apple iPhone 18 Pro</span>
+                        <span class="tag bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">iOS 27 Ready</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+                        iPhone 18 Pro 웹사이트 기획안
+                    </h1>
+                    <p class="text-gray-300 text-sm sm:text-base max-w-3xl leading-relaxed">
+                        버건디·글레이셔·블랙·실버 4종 일체형 마감, TSMC 2nm A20 Pro 칩셋, 48MP 가변 조리개, UDIR 작아진 Dynamic Island 사양 반영 웹 프로토타입 설계서
+                    </p>
+                </div>
+
+                <!-- Quick Nav Tabs -->
+                <div class="flex flex-wrap gap-2 text-xs font-semibold">
+                    <a href="#section-colors" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200">01. 컬러 쇼케이스</a>
+                    <a href="#section-specs" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200">02. 상세 스펙 명세</a>
+                    <a href="#section-wireframe" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200">03. 와이어프레임 기획</a>
+                    <a href="#section-calc" class="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200">04. 견적 시뮬레이터</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- SECTION 1: COLOR EXPERIENCE & VISUAL MOODBOARD -->
+        <section id="section-colors" class="space-y-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl accent-bg flex items-center justify-center accent-text border accent-border font-bold">1</div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">시그니처 컬러 갤러리 및 외장 마감 기획</h2>
+                        <p class="text-xs text-gray-400">전작의 투톤 디자인을탈피하고 후면 Ceramic Shield와 알루미늄 유니바디 색상을 100% 일치시킨 4종 룩앤필</p>
+                    </div>
+                </div>
+                <div class="hidden sm:block text-xs font-mono accent-text">Ceramic Shield + Aluminum Unibody</div>
+            </div>
+
+            <!-- Color Swatch Selector Card -->
+            <div class="glass-panel rounded-3xl p-6 border border-white/10">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="text-center md:text-left">
+                        <span class="text-xs text-gray-400 font-mono uppercase tracking-widest block mb-1">INTERACTIVE COLOR SWITCHER</span>
+                        <h3 class="text-xl font-bold text-white" id="selected-color-title">버건디 (Burgundy)</h3>
+                        <p class="text-xs text-gray-400 mt-1 max-w-lg" id="selected-color-desc">
+                            풍부하고 깊이 있는 와인 톤의 프리미엄 마감. 후면 세라믹 쉴드와 아노다이징 알루미늄 유니바디 톤이 일치하는 시그니처 대표 컬러.
+                        </p>
+                    </div>
+
+                    <!-- Swatches Buttons -->
+                    <div class="flex items-center gap-4 bg-black/50 p-3 rounded-full border border-white/10 backdrop-blur-md">
+                        <button onclick="setGlobalColor('burgundy')" class="swatch-btn w-10 h-10 rounded-full bg-[#6b1124] border-2 border-white transition-transform hover:scale-110 shadow-lg" title="버건디"></button>
+                        <button onclick="setGlobalColor('glacier')" class="swatch-btn w-10 h-10 rounded-full bg-[#89b3ca] border-2 border-transparent transition-transform hover:scale-110 shadow-lg" title="글레이셔"></button>
+                        <button onclick="setGlobalColor('black')" class="swatch-btn w-10 h-10 rounded-full bg-[#1e1e24] border-2 border-transparent transition-transform hover:scale-110 shadow-lg" title="블랙"></button>
+                        <button onclick="setGlobalColor('silver')" class="swatch-btn w-10 h-10 rounded-full bg-[#e2e8f0] border-2 border-transparent transition-transform hover:scale-110 shadow-lg" title="실버"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Visual Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Burgundy Card -->
+                <div class="glass-card rounded-2xl overflow-hidden group border-rose-900/40">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=800&q=80" alt="Burgundy Finish" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        <span class="absolute top-3 left-3 tag bg-rose-950/80 text-rose-200 border border-rose-500/30">시그니처 컬러</span>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <h4 class="font-bold text-white text-base">버건디 (Burgundy)</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">우아하고 강렬한 다크 딥 와인 빛의 신규 컬러. 후면 세라믹 메탈릭 일체감 극대화.</p>
+                        <div class="pt-2 text-[11px] font-mono text-rose-400">Hex #6B1124 • Aluminum Matching</div>
+                    </div>
+                </div>
+
+                <!-- Glacier Card -->
+                <div class="glass-card rounded-2xl overflow-hidden group border-sky-900/40">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80" alt="Glacier Finish" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        <span class="absolute top-3 left-3 tag bg-sky-950/80 text-sky-200 border border-sky-500/30">신규 컬러</span>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <h4 class="font-bold text-white text-base">글레이셔 (Glacier)</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">빙하의 차가운 톤을 머금은 미스티 블루-실버. 야외 3000nits 디스플레이와 대비감 형성.</p>
+                        <div class="pt-2 text-[11px] font-mono text-sky-400">Hex #89B3CA • Metallic Matte Glass</div>
+                    </div>
+                </div>
+
+                <!-- Space Black Card -->
+                <div class="glass-card rounded-2xl overflow-hidden group border-purple-900/40">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" alt="Space Black Finish" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        <span class="absolute top-3 left-3 tag bg-zinc-900/90 text-zinc-200 border border-zinc-700">클래식 프로</span>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <h4 class="font-bold text-white text-base">블랙 (Black)</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">깊고 묵직한 옵시디언 다크 매트 텍스처. 흑연 및 차세대 베이퍼 챔버 방열 테마와 부합.</p>
+                        <div class="pt-2 text-[11px] font-mono text-purple-400">Hex #1E1E24 • Deep Anodized Body</div>
+                    </div>
+                </div>
+
+                <!-- Pure Silver Card -->
+                <div class="glass-card rounded-2xl overflow-hidden group border-slate-700/40">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1512790182412-b19e6d614397?auto=format&fit=crop&w=800&q=80" alt="Pure Silver Finish" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                        <span class="absolute top-3 left-3 tag bg-slate-800/90 text-slate-200 border border-slate-600">퓨어 매트</span>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <h4 class="font-bold text-white text-base">실버 (Silver)</h4>
+                        <p class="text-xs text-gray-400 leading-relaxed">정갈하고 깨끗한 아노다이징 실버 톤. 2차 반사 광택을 억제한 고급 유니바디 마감.</p>
+                        <div class="pt-2 text-[11px] font-mono text-slate-300">Hex #E2E8F0 • Ceramic Shield Unified</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 2: HARDWARE SPECIFICATION ARCHITECTURE -->
+        <section id="section-specs" class="space-y-6">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl accent-bg flex items-center justify-center accent-text border accent-border font-bold">2</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white">iPhone 18 Pro 공식 하드웨어 사양 명세</h2>
+                    <p class="text-xs text-gray-400">기획서 및 웹사이트 컴포넌트에 반영된 기술 수치 및 아키텍처 정보</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- Spec Group 1: Chipset & Thermal -->
+                <div class="glass-card rounded-3xl p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                        <span class="text-xs font-mono accent-text">PROCESSOR &amp; THERMAL</span>
+                        <i class="fa-solid fa-microchip text-lg text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">Apple A20 Pro 칩셋</h3>
+                    <ul class="space-y-2.5 text-xs text-gray-300">
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">제조 공정:</span>
+                            <span class="font-mono text-white">TSMC N2 (2나노미터)</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">CPU 구성:</span>
+                            <span class="font-mono text-white">6코어 (성능+효율)</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">GPU 구성:</span>
+                            <span class="font-mono text-white">7코어 그래픽스</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">NPU 엔진:</span>
+                            <span class="font-mono text-white">듀얼 16코어 Neural Engine</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">열관리 시스템:</span>
+                            <span class="font-mono accent-text">3배 확장 베이퍼 챔버 + 나노트윈 구리</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">지속 성능:</span>
+                            <span class="font-mono text-emerald-400">+40% 지속 성능 향상</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Spec Group 2: Camera & UDIR Dynamic Island -->
+                <div class="glass-card rounded-3xl p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                        <span class="text-xs font-mono accent-text">CAMERA &amp; DYNAMIC ISLAND</span>
+                        <i class="fa-solid fa-camera-retro text-lg text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">프로 카메라 &amp; UDIR</h3>
+                    <ul class="space-y-2.5 text-xs text-gray-300">
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">메인 광각 (48MP):</span>
+                            <span class="font-mono accent-text">가변 조리개 (ƒ/1.48~ƒ/4.8)</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">사진 진위 검증:</span>
+                            <span class="font-mono text-white">Apple 레퍼런스 픽셀 서명</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">초광각 (48MP):</span>
+                            <span class="font-mono text-white">13mm, ƒ/2.2, 120° 시야각</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">망원 (48MP):</span>
+                            <span class="font-mono text-white">4배(100mm) / 8배(200mm) / 40배 디지털</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">Dynamic Island:</span>
+                            <span class="font-mono text-sky-300">UDIR 센서 적용 (크기 축소)</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">실시간 백그라운드:</span>
+                            <span class="font-mono text-emerald-400">최대 3개 앱 동시 표시</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Spec Group 3: Memory, Battery & Connectivity -->
+                <div class="glass-card rounded-3xl p-6 space-y-4">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                        <span class="text-xs font-mono accent-text">POWER &amp; CONNECTIVITY</span>
+                        <i class="fa-solid fa-bolt text-lg text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white">메모리, 배터리 &amp; 서비스</h3>
+                    <ul class="space-y-2.5 text-xs text-gray-300">
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">RAM 용량 &amp; 규격:</span>
+                            <span class="font-mono text-white">12GB LPDDR5X (32-Bit 3채널)</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">메모리 대역폭:</span>
+                            <span class="font-mono text-emerald-400">96-Bit 버스로 50% 증가</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">eSIM 전용 배터리:</span>
+                            <span class="font-mono text-white">4,288 mAh (동영상 36시간)</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">eSIM 겸용 배터리:</span>
+                            <span class="font-mono text-white">4,058 mAh (동영상 34시간)</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">초고속 AVS 충전:</span>
+                            <span class="font-mono accent-text">AVS 60W 사용 시 15분 50%</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-gray-400">한국 특화 기능:</span>
+                            <span class="font-mono text-sky-300">Apple Pay 티머니 대중교통</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3: WIREFRAME SECTION-BY-SECTION ARCHITECTURE -->
+        <section id="section-wireframe" class="space-y-6">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl accent-bg flex items-center justify-center accent-text border accent-border font-bold">3</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white">랜딩 페이지 섹션별 와이어프레임 설계서</h2>
+                    <p class="text-xs text-gray-400">실제 웹 구현 시 탑재할 컴포넌트 구조 및 인터랙션 개발 스펙</p>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-3xl p-6 overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                    <thead>
+                        <tr class="border-b border-white/10 text-gray-400 uppercase tracking-wider font-mono">
+                            <th class="py-3 px-4">섹션 ID</th>
+                            <th class="py-3 px-4">섹션 명칭</th>
+                            <th class="py-3 px-4">핵심 콘텐츠 &amp; 레이아웃</th>
+                            <th class="py-3 px-4">개발 요구사항 &amp; 기술 스택</th>
+                            <th class="py-3 px-4">대표 메인 카피라이팅</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5 text-gray-300">
+                        <tr>
+                            <td class="py-4 px-4 font-mono font-bold accent-text">01. HERO</td>
+                            <td class="py-4 px-4 font-bold text-white">메인 비주얼</td>
+                            <td class="py-4 px-4">3D 기기 실시간 스위칭, 4종 컬러 스와치 UI</td>
+                            <td class="py-4 px-4">Three.js 3D 렌더링 + Tailwind 다크 글래스모피즘</td>
+                            <td class="py-4 px-4 font-medium text-white">"한계를 뛰어넘은 프로의 완벽함."</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-mono font-bold accent-text">02. DESIGN</td>
+                            <td class="py-4 px-4 font-bold text-white">일체형 유니바디</td>
+                            <td class="py-4 px-4">후면 Ceramic Shield + 알루미늄 유니바디 정밀 조감도</td>
+                            <td class="py-4 px-4">스크롤 트리거 기반 회전 핀(Pin) 애니메이션</td>
+                            <td class="py-4 px-4 font-medium text-white">"완벽히 일치하는 오프셋 없는 일체감."</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-mono font-bold accent-text">03. CHIPSET</td>
+                            <td class="py-4 px-4 font-bold text-white">A20 Pro &amp; 방열</td>
+                            <td class="py-4 px-4">TSMC N2 공정 회로 및 3배 베이퍼 챔버 방열 분해도</td>
+                            <td class="py-4 px-4">흑연/나노트윈 구리 히트파이프 펄스 그래픽</td>
+                            <td class="py-4 px-4 font-medium text-white">"40% 더 높은 지속 퍼포먼스."</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-mono font-bold accent-text">04. DISPLAY</td>
+                            <td class="py-4 px-4 font-bold text-white">UDIR &amp; 화면</td>
+                            <td class="py-4 px-4">축소된 Dynamic Island (앱 3개 동시 알림) 시뮬레이터</td>
+                            <td class="py-4 px-4">1-120Hz LTPO2 ProMotion 및 3000nits 가변 조도</td>
+                            <td class="py-4 px-4 font-medium text-white">"더 작아진 아일랜드, 3배 더 넓은 자유."</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-mono font-bold accent-text">05. CAMERA</td>
+                            <td class="py-4 px-4 font-bold text-white">가변 조리개</td>
+                            <td class="py-4 px-4">ƒ/1.48 ~ ƒ/4.8 조리개 물리 셔터 애니메이션</td>
+                            <td class="py-4 px-4">Apple 레퍼런스 이미지(픽셀 진위 서명) 인터랙션</td>
+                            <td class="py-4 px-4 font-medium text-white">"iPhone 최초의 물리 가변 조리개."</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-mono font-bold accent-text">06. POWER</td>
+                            <td class="py-4 px-4 font-bold text-white">배터리 &amp; AVS 60W</td>
+                            <td class="py-4 px-4">eSIM 전용(36h) vs 겸용(34h) 스펙 비교 및 충전 시뮬레이션</td>
+                            <td class="py-4 px-4">AVS 60W 15분 50% 급속 충전 카운터</td>
+                            <td class="py-4 px-4 font-medium text-white">"15분 충전으로 하루를 채우다."</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-4 font-mono font-bold accent-text">07. SERVICE</td>
+                            <td class="py-4 px-4 font-bold text-white">Apple Pay 티머니</td>
+                            <td class="py-4 px-4">한국 대중교통 태깅 모션 및 MIE 메모리 보안 카드</td>
+                            <td class="py-4 px-4">NFC 결제 탭 모션 및 MIE 보안 구동 안내</td>
+                            <td class="py-4 px-4 font-medium text-white">"대한민국 대중교통도 터치 한 번으로."</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECTION 4: INTERACTIVE SPECS & PRICE CALCULATOR SIMULATOR -->
+        <section id="section-calc" class="space-y-6">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl accent-bg flex items-center justify-center accent-text border accent-border font-bold">4</div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white">실시간 견적 &amp; 옵션 조합 시뮬레이터</h2>
+                    <p class="text-xs text-gray-400">eSIM 전용/겸용 모델 및 저장 용량별 실시간 견적 산정 기능</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Left Configuration Panel -->
+                <div class="lg:col-span-7 space-y-6">
+                    
+                    <!-- 1. Model Choice -->
+                    <div class="glass-card rounded-3xl p-6">
+                        <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4 font-mono">STEP 1. 모델 선택</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <button onclick="calcSelectModel('pro')" id="calc-btn-pro" class="p-5 rounded-2xl border-2 accent-border accent-bg text-left transition-all">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-bold text-lg text-white">iPhone 18 Pro</span>
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/10 text-white">6.3형</span>
+                                </div>
+                                <p class="text-xs text-gray-400">₩1,550,000 부터</p>
+                            </button>
+                            <button onclick="calcSelectModel('promax')" id="calc-btn-promax" class="p-5 rounded-2xl border border-white/10 bg-white/5 text-left hover:border-white/30 transition-all">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-bold text-lg text-white">iPhone 18 Pro Max</span>
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/10 text-gray-300">6.9형</span>
+                                </div>
+                                <p class="text-xs text-gray-400">₩1,900,000 부터</p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 2. SIM Type Choice (eSIM Only vs Dual) -->
+                    <div class="glass-card rounded-3xl p-6">
+                        <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4 font-mono">STEP 2. SIM 방식 및 배터리 타임 선택</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <button onclick="calcSelectSim('esim')" id="calc-btn-esim" class="p-4 rounded-xl border-2 accent-border accent-bg text-left transition-all">
+                                <div class="font-bold text-white text-sm">eSIM 전용 모델</div>
+                                <div class="text-xs accent-text mt-1">4,288 mAh • 최대 36시간 재생</div>
+                                <div class="text-[11px] text-gray-400 mt-1">SIM 슬롯 제외로 배터리 용량 극대화</div>
+                            </button>
+                            <button onclick="calcSelectSim('dual')" id="calc-btn-dual" class="p-4 rounded-xl border border-white/10 bg-white/5 text-left hover:border-white/30 transition-all">
+                                <div class="font-bold text-white text-sm">eSIM + 물리 SIM 겸용</div>
+                                <div class="text-xs text-sky-400 mt-1">4,058 mAh • 최대 34시간 재생</div>
+                                <div class="text-[11px] text-gray-400 mt-1">기존 나노 SIM 카드를 함께 사용</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3. Storage Choice -->
+                    <div class="glass-card rounded-3xl p-6">
+                        <h3 class="text-sm font-semibold text-gray-300 uppercase tracking-wider mb-4 font-mono">STEP 3. 저장 용량 선택</h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <button onclick="calcSelectStorage('256', 0)" id="calc-st-256" class="p-4 rounded-xl border-2 accent-border accent-bg text-center transition-all">
+                                <div class="font-bold text-base text-white">256GB</div>
+                                <div class="text-[11px] text-gray-400 mt-0.5">기본 포함</div>
+                            </button>
+                            <button onclick="calcSelectStorage('512', 300000)" id="calc-st-512" class="p-4 rounded-xl border border-white/10 bg-white/5 text-center hover:border-white/30 transition-all">
+                                <div class="font-bold text-base text-white">512GB</div>
+                                <div class="text-[11px] text-gray-400 mt-0.5">+ ₩300,000</div>
+                            </button>
+                            <button onclick="calcSelectStorage('1TB', 600000)" id="calc-st-1TB" class="p-4 rounded-xl border border-white/10 bg-white/5 text-center hover:border-white/30 transition-all">
+                                <div class="font-bold text-base text-white">1TB</div>
+                                <div class="text-[11px] text-gray-400 mt-0.5">+ ₩600,000</div>
+                            </button>
+                            <button onclick="calcSelectStorage('2TB', 950000)" id="calc-st-2TB" class="p-4 rounded-xl border border-white/10 bg-white/5 text-center hover:border-white/30 transition-all">
+                                <div class="font-bold text-base text-white">2TB</div>
+                                <div class="text-[11px] text-gray-400 mt-0.5">+ ₩950,000</div>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Realtime Live Summary Box -->
+                <div class="lg:col-span-5">
+                    <div class="glass-card rounded-3xl p-8 sticky top-8 accent-border">
+                        <h3 class="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4">구성 내역 요약</h3>
+
+                        <div class="space-y-4 text-sm mb-6">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400" id="summary-model">iPhone 18 Pro</span>
+                                <span class="text-white font-mono font-semibold" id="summary-base-price">₩1,550,000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">SIM 규격 (<span id="summary-sim" class="accent-text">eSIM 전용</span>)</span>
+                                <span class="text-white font-mono text-xs" id="summary-battery">4,288 mAh (36h)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">저장 용량 (<span id="summary-st-name">256GB</span>)</span>
+                                <span class="text-white font-mono font-semibold" id="summary-st-price">+ ₩0</span>
+                            </div>
+                            
+                            <div class="pt-4 border-t border-white/10 flex justify-between items-baseline">
+                                <div>
+                                    <span class="text-xs text-gray-400 block">총 일시불 금액</span>
+                                    <span class="text-3xl font-black accent-text font-mono" id="summary-total font-mono">
+                                        ₩1,550,000
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="accent-bg border accent-border rounded-2xl p-4 text-center">
+                                <span class="text-xs text-gray-300 block">Apple Card 24개월 무이자</span>
+                                <span class="text-lg font-bold text-white font-mono" id="summary-monthly">월 ₩64,583</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <div class="text-[11px] text-gray-400 flex items-center gap-2">
+                                <i class="fa-solid fa-check accent-text"></i>
+                                <span>Apple Pay 티머니 대중교통 이용 가능</span>
+                            </div>
+                            <div class="text-[11px] text-gray-400 flex items-center gap-2">
+                                <i class="fa-solid fa-check accent-text"></i>
+                                <span>AVS 60W 초고속 충전 지원 (15분 50%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="pt-8 border-t border-white/10 text-center text-xs text-gray-500 space-y-2">
+            <p>Apple iPhone 18 Pro Official Web Specification &amp; Interactive Proposal • Confidential</p>
+            <p>모든 이미지 및 기획 요소는 2nm TSMC A20 Pro 및 UDIR 센서 기술 기반 사양에 맞춰 시각화되었습니다.</p>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript Interactive Handlers -->
+    <script>
+        // State
+        let selectedModel = 'pro';
+        let selectedSim = 'esim';
+        let selectedStorage = '256';
+        let basePrice = 1550000;
+        let storagePrice = 0;
+
+        // Theme Swatches Switcher
+        const colorThemes = {
+            burgundy: {
+                title: "버건디 (Burgundy)",
+                desc: "풍부하고 깊이 있는 와인 톤의 프리미엄 마감. 후면 세라믹 쉴드와 아노다이징 알루미늄 유니바디 톤이 일치하는 시그니처 대표 컬러.",
+                bodyClass: "theme-burgundy p-4 sm:p-8 md:p-12 selection:bg-rose-600 selection:text-white"
+            },
+            glacier: {
+                title: "글레이셔 (Glacier)",
+                desc: "빙하의 차가운 미스티 블루-실버 감성. 빛의 각도에 따라 오묘하게 빛나는 수려한 일체형 아노다이징 유니바디 마감.",
+                bodyClass: "theme-glacier p-4 sm:p-8 md:p-12 selection:bg-sky-500 selection:text-white"
+            },
+            black: {
+                title: "블랙 (Space Black)",
+                desc: "깊고 묵직한 옵시디언 다크 매트 텍스처. 흑연 및 차세대 베이퍼 챔버 방열 테마와 부합하는 클래식 프로 바디.",
+                bodyClass: "theme-black p-4 sm:p-8 md:p-12 selection:bg-purple-600 selection:text-white"
+            },
+            silver: {
+                title: "실버 (Pure Silver)",
+                desc: "정갈하고 깨끗한 아노다이징 실버 톤. 2차 반사 광택을 억제한 무결점 세라믹 쉴드 일체형 외장.",
+                bodyClass: "theme-silver p-4 sm:p-8 md:p-12 selection:bg-slate-300 selection:text-black"
+            }
+        };
+
+        function setGlobalColor(themeKey) {
+            const data = colorThemes[themeKey];
+            document.getElementById('app-body').className = data.bodyClass;
+            document.getElementById('selected-color-title').innerText = data.title;
+            document.getElementById('selected-color-desc').innerText = data.desc;
+
+            // Highlight buttons border
+            document.querySelectorAll('.swatch-btn').forEach(btn => {
+                btn.classList.remove('border-white');
+                btn.classList.add('border-transparent');
+            });
+            event.currentTarget.classList.remove('border-transparent');
+            event.currentTarget.classList.add('border-white');
+        }
+
+        // Calculator Interactions
+        function calcSelectModel(model) {
+            selectedModel = model;
+            const btnPro = document.getElementById('calc-btn-pro');
+            const btnProMax = document.getElementById('calc-btn-promax');
+
+            if (model === 'pro') {
+                basePrice = 1550000;
+                btnPro.className = 'p-5 rounded-2xl border-2 accent-border accent-bg text-left transition-all';
+                btnProMax.className = 'p-5 rounded-2xl border border-white/10 bg-white/5 text-left hover:border-white/30 transition-all';
+                document.getElementById('summary-model').innerText = 'iPhone 18 Pro';
+            } else {
+                basePrice = 1900000;
+                btnProMax.className = 'p-5 rounded-2xl border-2 accent-border accent-bg text-left transition-all';
+                btnPro.className = 'p-5 rounded-2xl border border-white/10 bg-white/5 text-left hover:border-white/30 transition-all';
+                document.getElementById('summary-model').innerText = 'iPhone 18 Pro Max';
+            }
+            updateCalcUI();
+        }
+
+        function calcSelectSim(simType) {
+            selectedSim = simType;
+            const btnEsim = document.getElementById('calc-btn-esim');
+            const btnDual = document.getElementById('calc-btn-dual');
+
+            if (simType === 'esim') {
+                btnEsim.className = 'p-4 rounded-xl border-2 accent-border accent-bg text-left transition-all';
+                btnDual.className = 'p-4 rounded-xl border border-white/10 bg-white/5 text-left hover:border-white/30 transition-all';
+                document.getElementById('summary-sim').innerText = 'eSIM 전용';
+                document.getElementById('summary-battery').innerText = '4,288 mAh (36h)';
+            } else {
+                btnDual.className = 'p-4 rounded-xl border-2 accent-border accent-bg text-left transition-all';
+                btnEsim.className = 'p-4 rounded-xl border border-white/10 bg-white/5 text-left hover:border-white/30 transition-all';
+                document.getElementById('summary-sim').innerText = 'eSIM + 물리 SIM';
+                document.getElementById('summary-battery').innerText = '4,058 mAh (34h)';
+            }
+        }
+
+        function calcSelectStorage(stKey, extra) {
+            selectedStorage = stKey;
+            storagePrice = extra;
+
+            document.querySelectorAll('[id^="calc-st-"]').forEach(btn => {
+                btn.className = 'p-4 rounded-xl border border-white/10 bg-white/5 text-center hover:border-white/30 transition-all';
+            });
+            document.getElementById(`calc-st-${stKey}`).className = 'p-4 rounded-xl border-2 accent-border accent-bg text-center transition-all';
+
+            document.getElementById('summary-st-name').innerText = stKey;
+            document.getElementById('summary-st-price').innerText = `+ ₩${extra.toLocaleString()}`;
+            updateCalcUI();
+        }
+
+        function updateCalcUI() {
+            document.getElementById('summary-base-price').innerText = `₩${basePrice.toLocaleString()}`;
+            const total = basePrice + storagePrice;
+            const monthly = Math.round(total / 24);
+
+            document.getElementById('summary-total font-mono').innerText = `₩${total.toLocaleString()}`;
+            document.getElementById('summary-monthly').innerText = `월 ₩${monthly.toLocaleString()}`;
+        }
+    </script>
+</body>
+</html>
